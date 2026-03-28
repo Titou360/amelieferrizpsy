@@ -1,0 +1,24 @@
+{
+  "name": "Amélie Ferriz — Psychanalyste à Narbonne",
+  "short_name": "Amélie Ferriz",
+  "description": "Psychanalyste à Narbonne. Psychanalyse, psychothérapie, thérapie de couple, enfants et adolescents, groupe de parole.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1B2A4A",
+  "theme_color": "#1B2A4A",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

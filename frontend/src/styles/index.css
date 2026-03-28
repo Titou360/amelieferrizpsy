@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans text-navy bg-cream;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  /* Leaflet map fix */
+  .leaflet-container {
+    z-index: 1;
+  }
+}
+
+@layer components {
+  /* Fixed background parallax wrapper */
+  .fixed-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Section overlay */
+  .overlay-navy {
+    @apply relative;
+  }
+  .overlay-navy::before {
+    content: '';
+    @apply absolute inset-0 bg-navy/70 z-0;
+  }
+
+  /* Card therapy */
+  .therapy-card {
+    @apply relative overflow-hidden cursor-pointer transition-transform duration-500 hover:scale-[1.02];
+  }
+
+  /* Smooth scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-cream;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sage rounded-full;
+  }
+
+  /* TipTap editor prose styles */
+  .tiptap-content h1 { @apply text-3xl font-serif font-semibold mb-4 text-navy; }
+  .tiptap-content h2 { @apply text-2xl font-serif font-semibold mb-3 text-navy; }
+  .tiptap-content h3 { @apply text-xl font-serif font-medium mb-2 text-navy; }
+  .tiptap-content p  { @apply mb-4 leading-relaxed text-navy/80; }
+  .tiptap-content ul { @apply list-disc pl-6 mb-4 space-y-1; }
+  .tiptap-content ol { @apply list-decimal pl-6 mb-4 space-y-1; }
+  .tiptap-content a  { @apply text-orange underline; }
+  .tiptap-content strong { @apply font-semibold; }
+  .tiptap-content em { @apply italic; }
+  .tiptap-content img { @apply rounded-lg my-4 max-w-full; }
+  .tiptap-content blockquote {
+    @apply border-l-4 border-sage pl-4 italic text-navy/60 my-4;
+  }
+
+  /* Radix Dialog overlay animation */
+  .radix-overlay {
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-50;
+    animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .radix-content {
+    animation: contentShow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes overlayShow {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes contentShow {
+    from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  /* Btn base */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-sans font-medium tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+  .btn-primary {
+    @apply btn bg-orange text-white hover:bg-orange-dark focus-visible:ring-orange;
+  }
+  .btn-outline {
+    @apply btn border border-current text-navy hover:bg-navy hover:text-white focus-visible:ring-navy;
+  }
+  .btn-ghost {
+    @apply btn text-cream border border-cream/50 hover:bg-cream/10 focus-visible:ring-cream;
+  }
+
+  /* Dashboard form helpers */
+  .input {
+    @apply w-full border border-navy/15 bg-white px-4 py-2.5 text-sm font-sans text-navy placeholder-navy/30 focus:outline-none focus:border-orange transition-colors;
+  }
+  .label-xs {
+    @apply block text-xs font-sans text-navy/50 uppercase tracking-widest mb-2;
+  }
+}

@@ -14,6 +14,7 @@ import {
 import * as Tooltip from '@radix-ui/react-tooltip'
 import api from '../../lib/api'
 import { useToast } from '../../components/ui/ToastProvider'
+import ImageCropModal from '../../components/ui/ImageCropModal'
 
 interface ArticleForm {
   title: string
@@ -70,6 +71,8 @@ export default function ArticleEditor() {
   const [uploadingInline, setUploadingInline] = useState(false)
   const coverInputRef = useRef<HTMLInputElement>(null)
   const inlineInputRef = useRef<HTMLInputElement>(null)
+  const [cropSrc, setCropSrc] = useState<string | null>(null)
+  const [cropTarget, setCropTarget] = useState<'cover' | 'inline' | null>(null)
 
   const editor = useEditor({
     extensions: [
@@ -99,14 +102,14 @@ export default function ArticleEditor() {
     }
   }, [id, editor])
 
-  const validateAndUpload = useCallback(async (file: File): Promise<string> => {
+  const validateFile = useCallback((file: File): string | null => {
     const allowed = ['image/jpeg', 'image/png', 'image/webp']
-    if (!allowed.includes(file.type)) {
-      throw new Error('Format non supporté. Utilisez JPG, PNG ou WebP.')
-    }
-    if (file.size > 500 * 1024) {
-      throw new Error('Image trop lourde. Maximum 500 Ko.')
-    }
+    if (!allowed.includes(file.type)) return 'Format non supporté. Utilisez JPG, PNG ou WebP.'
+    if (file.size > 500 * 1024) return 'Image trop lourde. Maximum 500 Ko.'
+    return null
+  }, [])
+
+  const uploadBlob = useCallback(async (blob: Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = async () => {
@@ -119,39 +122,59 @@ export default function ArticleEditor() {
         }
       }
       reader.onerror = () => reject(new Error('Erreur de lecture du fichier'))
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(blob)
     })
   }, [])
 
-  const handleCoverUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Sélection fichier → ouvre la modale de crop
+  const handleCoverFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+    e.target.value = ''
     if (!file) return
-    setUploadingCover(true)
-    try {
-      const url = await validateAndUpload(file)
-      setForm((f) => ({ ...f, coverImage: url }))
-    } catch (err: unknown) {
-      toast({ type: 'error', title: (err as Error).message })
-    } finally {
-      setUploadingCover(false)
-      e.target.value = ''
-    }
-  }, [validateAndUpload, toast])
+    const err = validateFile(file)
+    if (err) { toast({ type: 'error', title: err }); return }
+    const reader = new FileReader()
+    reader.onload = () => { setCropSrc(reader.result as string); setCropTarget('cover') }
+    reader.readAsDataURL(file)
+  }, [validateFile, toast])
 
-  const handleInlineImageUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInlineFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+    e.target.value = ''
     if (!file) return
-    setUploadingInline(true)
-    try {
-      const url = await validateAndUpload(file)
-      editor?.chain().focus().setImage({ src: url }).run()
-    } catch (err: unknown) {
-      toast({ type: 'error', title: (err as Error).message })
-    } finally {
-      setUploadingInline(false)
-      e.target.value = ''
+    const err = validateFile(file)
+    if (err) { toast({ type: 'error', title: err }); return }
+    const reader = new FileReader()
+    reader.onload = () => { setCropSrc(reader.result as string); setCropTarget('inline') }
+    reader.readAsDataURL(file)
+  }, [validateFile, toast])
+
+  // Après confirmation du crop → upload
+  const handleCropConfirm = useCallback(async (blob: Blob) => {
+    setCropSrc(null)
+    if (cropTarget === 'cover') {
+      setUploadingCover(true)
+      try {
+        const url = await uploadBlob(blob)
+        setForm((f) => ({ ...f, coverImage: url }))
+      } catch (err: unknown) {
+        toast({ type: 'error', title: (err as Error).message })
+      } finally {
+        setUploadingCover(false)
+      }
+    } else if (cropTarget === 'inline') {
+      setUploadingInline(true)
+      try {
+        const url = await uploadBlob(blob)
+        editor?.chain().focus().setImage({ src: url }).run()
+      } catch (err: unknown) {
+        toast({ type: 'error', title: (err as Error).message })
+      } finally {
+        setUploadingInline(false)
+      }
     }
-  }, [validateAndUpload, editor, toast])
+    setCropTarget(null)
+  }, [cropTarget, uploadBlob, editor, toast])
 
   const handleSave = async (publish?: boolean) => {
     if (!form.title.trim()) { toast({ type: 'error', title: 'Le titre est requis' }); return }
@@ -192,8 +215,16 @@ export default function ArticleEditor() {
     <Tooltip.Provider delayDuration={300}>
       <div className="space-y-6 max-w-4xl">
         {/* Hidden file inputs */}
-        <input ref={coverInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleCoverUpload} />
-        <input ref={inlineInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleInlineImageUpload} />
+        <input ref={coverInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleCoverFileSelect} />
+        <input ref={inlineInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleInlineFileSelect} />
+        {cropSrc && (
+          <ImageCropModal
+            imageSrc={cropSrc}
+            aspect={cropTarget === 'cover' ? 16 / 9 : undefined}
+            onConfirm={handleCropConfirm}
+            onCancel={() => { setCropSrc(null); setCropTarget(null) }}
+          />
+        )}
         {/* Top bar */}
         <div className="flex items-center justify-between flex-wrap gap-4">
           <button

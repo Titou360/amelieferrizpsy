@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import Article from '../models/Article.js'
 import { requireAuth } from '../middleware/auth.js'
+import cloudinary, { extractPublicId } from '../lib/cloudinary.js'
 
 const router = Router()
 
@@ -60,6 +61,13 @@ router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const article = await Article.findByIdAndDelete(req.params.id)
     if (!article) return res.status(404).json({ error: 'Article introuvable' })
+
+    // Supprime l'image de couverture sur Cloudinary si elle existe
+    const publicId = extractPublicId(article.coverImage)
+    if (publicId) {
+      cloudinary.uploader.destroy(publicId).catch(() => {})
+    }
+
     res.json({ ok: true })
   } catch {
     res.status(500).json({ error: 'Erreur serveur' })

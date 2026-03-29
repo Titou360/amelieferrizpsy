@@ -9,6 +9,7 @@ import ContactBanner from '../components/sections/ContactBanner'
 import MapSection from '../components/sections/MapSection'
 import TestimonialsSection from '../components/sections/TestimonialsSection'
 import ContactFormSection from '../components/sections/ContactFormSection'
+import ArticlesSection from '../components/sections/ArticlesSection'
 
 export default function HomePage() {
   return (
@@ -38,6 +39,7 @@ export default function HomePage() {
         <ContactBanner />
         <MapSection />
         <TestimonialsSection />
+        <ArticlesSection />
         <ContactFormSection />
       </main>
       <Footer />

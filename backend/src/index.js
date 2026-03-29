@@ -20,6 +20,7 @@ import authRouter from './routes/auth.js'
 import reviewsRouter from './routes/reviews.js'
 import articlesRouter from './routes/articles.js'
 import contactRouter from './routes/contact.js'
+import uploadRouter from './routes/upload.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -53,6 +54,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/reviews', reviewsRouter)
 app.use('/api/articles', articlesRouter)
 app.use('/api/contact', contactRouter)
+app.use('/api/upload', uploadRouter)
 
 // Health check
 app.get('/api/health', (_, res) => res.json({ ok: true }))

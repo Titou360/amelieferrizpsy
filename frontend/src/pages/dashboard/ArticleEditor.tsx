@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -9,7 +9,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import {
   Bold, Italic, Underline as UnderlineIcon, List, ListOrdered,
   Heading2, Heading3, Link as LinkIcon, Image as ImageIcon,
-  ArrowLeft, Save, Eye, Loader2, Quote
+  ArrowLeft, Save, Eye, Loader2, Quote, Upload, X
 } from 'lucide-react'
 import * as Tooltip from '@radix-ui/react-tooltip'
 import api from '../../lib/api'
@@ -19,6 +19,7 @@ interface ArticleForm {
   title: string
   excerpt: string
   category: string
+  coverImage: string
   published: boolean
 }
 
@@ -60,10 +61,15 @@ export default function ArticleEditor() {
     title: '',
     excerpt: '',
     category: '',
+    coverImage: '',
     published: false,
   })
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
+  const [uploadingCover, setUploadingCover] = useState(false)
+  const [uploadingInline, setUploadingInline] = useState(false)
+  const coverInputRef = useRef<HTMLInputElement>(null)
+  const inlineInputRef = useRef<HTMLInputElement>(null)
 
   const editor = useEditor({
     extensions: [
@@ -85,13 +91,59 @@ export default function ArticleEditor() {
       api.get(`/articles/${id}?byId=true`)
         .then((res) => {
           const a = res.data
-          setForm({ title: a.title, excerpt: a.excerpt || '', category: a.category || '', published: a.published })
+          setForm({ title: a.title, excerpt: a.excerpt || '', category: a.category || '', coverImage: a.coverImage || '', published: a.published })
           editor?.commands.setContent(a.content)
         })
         .catch(() => { toast({ type: 'error', title: 'Article introuvable' }); navigate('/dashboard/articles') })
         .finally(() => setLoading(false))
     }
   }, [id, editor])
+
+  const uploadToCloudinary = useCallback(async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = async () => {
+        try {
+          const res = await api.post('/upload', { data: reader.result as string })
+          resolve(res.data.url)
+        } catch {
+          reject(new Error('Échec de l\'upload'))
+        }
+      }
+      reader.onerror = () => reject(new Error('Erreur de lecture'))
+      reader.readAsDataURL(file)
+    })
+  }, [])
+
+  const handleCoverUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingCover(true)
+    try {
+      const url = await uploadToCloudinary(file)
+      setForm((f) => ({ ...f, coverImage: url }))
+    } catch {
+      toast({ type: 'error', title: 'Erreur lors de l\'upload de la cover' })
+    } finally {
+      setUploadingCover(false)
+      e.target.value = ''
+    }
+  }, [uploadToCloudinary, toast])
+
+  const handleInlineImageUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingInline(true)
+    try {
+      const url = await uploadToCloudinary(file)
+      editor?.chain().focus().setImage({ src: url }).run()
+    } catch {
+      toast({ type: 'error', title: 'Erreur lors de l\'upload de l\'image' })
+    } finally {
+      setUploadingInline(false)
+      e.target.value = ''
+    }
+  }, [uploadToCloudinary, editor, toast])
 
   const handleSave = async (publish?: boolean) => {
     if (!form.title.trim()) { toast({ type: 'error', title: 'Le titre est requis' }); return }
@@ -122,11 +174,6 @@ export default function ArticleEditor() {
     if (url) editor?.chain().focus().setLink({ href: url }).run()
   }, [editor])
 
-  const addImage = useCallback(() => {
-    const url = window.prompt('URL de l\'image :')
-    if (url) editor?.chain().focus().setImage({ src: url }).run()
-  }, [editor])
-
   if (loading) return (
     <div className="flex items-center justify-center py-20">
       <Loader2 size={24} className="animate-spin text-navy/30" />
@@ -136,6 +183,9 @@ export default function ArticleEditor() {
   return (
     <Tooltip.Provider delayDuration={300}>
       <div className="space-y-6 max-w-4xl">
+        {/* Hidden file inputs */}
+        <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverUpload} />
+        <input ref={inlineInputRef} type="file" accept="image/*" className="hidden" onChange={handleInlineImageUpload} />
         {/* Top bar */}
         <div className="flex items-center justify-between flex-wrap gap-4">
           <button
@@ -208,6 +258,33 @@ export default function ArticleEditor() {
               </select>
             </div>
           </div>
+
+          {/* Cover image */}
+          <div>
+            <label className="label-xs">Image de couverture</label>
+            {form.coverImage ? (
+              <div className="relative mt-1 inline-block">
+                <img src={form.coverImage} alt="Cover" className="h-32 object-cover border border-navy/10" />
+                <button
+                  type="button"
+                  onClick={() => setForm((f) => ({ ...f, coverImage: '' }))}
+                  className="absolute top-1 right-1 bg-white/90 hover:bg-white p-0.5 border border-navy/10"
+                >
+                  <X size={13} className="text-navy" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => coverInputRef.current?.click()}
+                disabled={uploadingCover}
+                className="mt-1 flex items-center gap-2 border border-dashed border-navy/20 px-4 py-3 text-xs font-sans text-navy/40 hover:text-navy hover:border-navy/40 transition-colors"
+              >
+                {uploadingCover ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                {uploadingCover ? 'Upload en cours…' : 'Choisir une image'}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Editor */}
@@ -244,8 +321,11 @@ export default function ArticleEditor() {
             <ToolbarBtn onClick={addLink} active={editor?.isActive('link')} title="Ajouter un lien">
               <LinkIcon size={15} />
             </ToolbarBtn>
-            <ToolbarBtn onClick={addImage} title="Insérer une image">
-              <ImageIcon size={15} />
+            <ToolbarBtn
+              onClick={() => inlineInputRef.current?.click()}
+              title={uploadingInline ? 'Upload en cours…' : 'Insérer une image'}
+            >
+              {uploadingInline ? <Loader2 size={15} className="animate-spin" /> : <ImageIcon size={15} />}
             </ToolbarBtn>
           </div>
 

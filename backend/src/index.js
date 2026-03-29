@@ -1,4 +1,15 @@
 import 'dotenv/config'
+
+// Capture toutes les erreurs non catchées pour les voir dans les logs Render
+process.on('uncaughtException', (err) => {
+  console.error('💥 uncaughtException:', err)
+  process.exit(1)
+})
+process.on('unhandledRejection', (reason) => {
+  console.error('💥 unhandledRejection:', reason)
+  process.exit(1)
+})
+
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'

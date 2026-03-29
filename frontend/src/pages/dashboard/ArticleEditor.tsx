@@ -99,18 +99,26 @@ export default function ArticleEditor() {
     }
   }, [id, editor])
 
-  const uploadToCloudinary = useCallback(async (file: File): Promise<string> => {
+  const validateAndUpload = useCallback(async (file: File): Promise<string> => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowed.includes(file.type)) {
+      throw new Error('Format non supporté. Utilisez JPG, PNG ou WebP.')
+    }
+    if (file.size > 500 * 1024) {
+      throw new Error('Image trop lourde. Maximum 500 Ko.')
+    }
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = async () => {
         try {
           const res = await api.post('/upload', { data: reader.result as string })
           resolve(res.data.url)
-        } catch {
-          reject(new Error('Échec de l\'upload'))
+        } catch (err: unknown) {
+          const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error
+          reject(new Error(msg || 'Échec de l\'upload Cloudinary'))
         }
       }
-      reader.onerror = () => reject(new Error('Erreur de lecture'))
+      reader.onerror = () => reject(new Error('Erreur de lecture du fichier'))
       reader.readAsDataURL(file)
     })
   }, [])
@@ -120,30 +128,30 @@ export default function ArticleEditor() {
     if (!file) return
     setUploadingCover(true)
     try {
-      const url = await uploadToCloudinary(file)
+      const url = await validateAndUpload(file)
       setForm((f) => ({ ...f, coverImage: url }))
-    } catch {
-      toast({ type: 'error', title: 'Erreur lors de l\'upload de la cover' })
+    } catch (err: unknown) {
+      toast({ type: 'error', title: (err as Error).message })
     } finally {
       setUploadingCover(false)
       e.target.value = ''
     }
-  }, [uploadToCloudinary, toast])
+  }, [validateAndUpload, toast])
 
   const handleInlineImageUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     setUploadingInline(true)
     try {
-      const url = await uploadToCloudinary(file)
+      const url = await validateAndUpload(file)
       editor?.chain().focus().setImage({ src: url }).run()
-    } catch {
-      toast({ type: 'error', title: 'Erreur lors de l\'upload de l\'image' })
+    } catch (err: unknown) {
+      toast({ type: 'error', title: (err as Error).message })
     } finally {
       setUploadingInline(false)
       e.target.value = ''
     }
-  }, [uploadToCloudinary, editor, toast])
+  }, [validateAndUpload, editor, toast])
 
   const handleSave = async (publish?: boolean) => {
     if (!form.title.trim()) { toast({ type: 'error', title: 'Le titre est requis' }); return }
@@ -184,8 +192,8 @@ export default function ArticleEditor() {
     <Tooltip.Provider delayDuration={300}>
       <div className="space-y-6 max-w-4xl">
         {/* Hidden file inputs */}
-        <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverUpload} />
-        <input ref={inlineInputRef} type="file" accept="image/*" className="hidden" onChange={handleInlineImageUpload} />
+        <input ref={coverInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleCoverUpload} />
+        <input ref={inlineInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleInlineImageUpload} />
         {/* Top bar */}
         <div className="flex items-center justify-between flex-wrap gap-4">
           <button

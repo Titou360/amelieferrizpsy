@@ -270,28 +270,50 @@ export default function ArticleEditor() {
           {/* Cover image */}
           <div>
             <label className="label-xs">Image de couverture</label>
-            {form.coverImage ? (
-              <div className="relative mt-1 inline-block">
-                <img src={form.coverImage} alt="Cover" className="h-32 object-cover border border-navy/10" />
+            <div className="mt-1 relative w-full h-48 border border-navy/10 overflow-hidden bg-navy/3 flex items-center justify-center">
+              {uploadingCover ? (
+                /* Spinner overlay pendant l'upload */
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-navy/5">
+                  <Loader2 size={28} className="animate-spin text-orange" />
+                  <span className="text-xs font-sans text-navy/50">Upload en cours…</span>
+                </div>
+              ) : form.coverImage ? (
+                <>
+                  <img
+                    src={form.coverImage}
+                    alt="Cover"
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Actions overlay au hover */}
+                  <div className="absolute inset-0 bg-navy/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => coverInputRef.current?.click()}
+                      className="flex items-center gap-1.5 bg-white px-3 py-2 text-xs font-sans text-navy hover:bg-orange hover:text-white transition-colors"
+                    >
+                      <Upload size={12} /> Remplacer
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setForm((f) => ({ ...f, coverImage: '' }))}
+                      className="flex items-center gap-1.5 bg-white px-3 py-2 text-xs font-sans text-navy hover:bg-orange hover:text-white transition-colors"
+                    >
+                      <X size={12} /> Supprimer
+                    </button>
+                  </div>
+                </>
+              ) : (
                 <button
                   type="button"
-                  onClick={() => setForm((f) => ({ ...f, coverImage: '' }))}
-                  className="absolute top-1 right-1 bg-white/90 hover:bg-white p-0.5 border border-navy/10"
+                  onClick={() => coverInputRef.current?.click()}
+                  className="flex flex-col items-center gap-2 text-navy/30 hover:text-navy/60 transition-colors py-6"
                 >
-                  <X size={13} className="text-navy" />
+                  <Upload size={22} />
+                  <span className="text-xs font-sans">Choisir une image</span>
+                  <span className="text-xs font-sans text-navy/25">JPG, PNG, WebP — max 500 Ko</span>
                 </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => coverInputRef.current?.click()}
-                disabled={uploadingCover}
-                className="mt-1 flex items-center gap-2 border border-dashed border-navy/20 px-4 py-3 text-xs font-sans text-navy/40 hover:text-navy hover:border-navy/40 transition-colors"
-              >
-                {uploadingCover ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-                {uploadingCover ? 'Upload en cours…' : 'Choisir une image'}
-              </button>
-            )}
+              )}
+            </div>
           </div>
         </div>
 

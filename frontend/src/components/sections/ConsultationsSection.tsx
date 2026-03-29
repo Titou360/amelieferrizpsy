@@ -33,21 +33,46 @@ const consultations = [
 ]
 
 const colorMap = {
-  navy: {
-    iconBg: 'bg-navy text-cream',
-    accent: 'bg-navy',
-    border: 'border-navy/10',
-  },
-  sage: {
-    iconBg: 'bg-sage text-cream',
-    accent: 'bg-sage',
-    border: 'border-sage/20',
-  },
-  orange: {
-    iconBg: 'bg-orange text-cream',
-    accent: 'bg-orange',
-    border: 'border-orange/20',
-  },
+  navy:   { iconBg: 'bg-navy text-cream',   accent: 'bg-navy',   border: 'border-navy/10' },
+  sage:   { iconBg: 'bg-sage text-cream',   accent: 'bg-sage',   border: 'border-sage/20' },
+  orange: { iconBg: 'bg-orange text-cream', accent: 'bg-orange', border: 'border-orange/20' },
+}
+
+// Composant séparé pour respecter les règles des hooks
+function ConsultationCard({ c, i }: { c: typeof consultations[0]; i: number }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const Icon = c.icon
+  const colors = colorMap[c.color as keyof typeof colorMap]
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: i * 0.15 }}
+      className={`bg-white border ${colors.border} p-8 relative`}
+    >
+      <div className={`absolute top-0 left-0 right-0 h-1 ${colors.accent}`} />
+
+      <div className={`inline-flex items-center justify-center w-12 h-12 ${colors.iconBg} mb-6`}>
+        <Icon size={22} />
+      </div>
+
+      <h3 className="font-serif text-2xl text-navy mb-1">{c.title}</h3>
+      <p className="text-xs font-sans text-orange/80 tracking-widest uppercase mb-5">
+        {c.subtitle}
+      </p>
+      <p className="text-sm font-sans text-navy/60 leading-relaxed mb-4">
+        {c.description}
+      </p>
+      {c.note && (
+        <p className="text-xs font-sans text-navy/40 italic border-t border-navy/10 pt-4">
+          {c.note}
+        </p>
+      )}
+    </motion.div>
+  )
 }
 
 export default function ConsultationsSection() {
@@ -75,43 +100,9 @@ export default function ConsultationsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {consultations.map((c, i) => {
-            const Icon = c.icon
-            const colors = colorMap[c.color as keyof typeof colorMap]
-            const ref = useRef(null)
-            const inView = useInView(ref, { once: true, margin: '-60px' })
-
-            return (
-              <motion.div
-                key={c.title}
-                ref={ref}
-                initial={{ opacity: 0, y: 40 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-                className={`bg-white border ${colors.border} p-8 relative group`}
-              >
-                {/* Top accent line */}
-                <div className={`absolute top-0 left-0 right-0 h-1 ${colors.accent}`} />
-
-                <div className={`inline-flex items-center justify-center w-12 h-12 ${colors.iconBg} mb-6`}>
-                  <Icon size={22} />
-                </div>
-
-                <h3 className="font-serif text-2xl text-navy mb-1">{c.title}</h3>
-                <p className="text-xs font-sans text-orange/80 tracking-widest uppercase mb-5">
-                  {c.subtitle}
-                </p>
-                <p className="text-sm font-sans text-navy/60 leading-relaxed mb-4">
-                  {c.description}
-                </p>
-                {c.note && (
-                  <p className="text-xs font-sans text-navy/40 italic border-t border-navy/10 pt-4">
-                    {c.note}
-                  </p>
-                )}
-              </motion.div>
-            )
-          })}
+          {consultations.map((c, i) => (
+            <ConsultationCard key={c.title} c={c} i={i} />
+          ))}
         </div>
       </div>
     </section>

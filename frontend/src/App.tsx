@@ -1,5 +1,11 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
+}
 import * as CookieConsent from 'vanilla-cookieconsent'
 import { ToastProvider } from './components/ui/ToastProvider'
 import { AuthProvider } from './contexts/AuthContext'
@@ -76,6 +82,7 @@ export default function App() {
     <AuthProvider>
       <ToastProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/therapie/:slug" element={<TherapyPage />} />

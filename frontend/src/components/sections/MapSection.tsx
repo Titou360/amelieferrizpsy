@@ -14,7 +14,7 @@ const markerIcon = new Icon({
   popupAnchor: [1, -34],
 })
 
-const CABINET_POSITION: [number, number] = [43.1844, 3.0032] // Narbonne coords approx — à ajuster
+const CABINET_POSITION: [number, number] = [43.17542869822354, 3.003775278325781] // Narbonne coords approx — à ajuster
 
 export default function MapSection() {
   return (
@@ -58,7 +58,6 @@ export default function MapSection() {
                   <p className="text-xs font-sans text-cream/40 uppercase tracking-widest mb-1">Horaires</p>
                   <p className="font-sans text-cream/80 leading-relaxed">
                     Lundi – Vendredi : 9h – 19h<br />
-                    Samedi : sur rendez-vous
                   </p>
                 </div>
               </div>

@@ -68,6 +68,11 @@ export default function Footer() {
             <p className="text-xs tracking-[0.2em] uppercase text-cream/30 mb-5">Informations</p>
             <ul className="space-y-3 text-sm">
               <li>
+                <Link to="/faq" className="hover:text-cream transition-colors duration-200">
+                  Questions fréquentes
+                </Link>
+              </li>
+              <li>
                 <Link to="/mentions-legales" className="hover:text-cream transition-colors duration-200">
                   Mentions légales
                 </Link>

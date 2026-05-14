@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'À propos', href: '/#hero' },
   { label: 'Thérapies pratiquées', href: '/#accompagnement', hasDropdown: true },
   { label: 'Consultations', href: '/#consultations' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/#contact' },
 ]
 

@@ -15,7 +15,7 @@ interface SEOProps {
 const SITE_URL = 'https://www.amelieferrizpsychanalyste.fr'
 const SITE_NAME = 'Amélie Ferriz — Psychanalyste à Narbonne'
 const DEFAULT_DESCRIPTION = 'Psychanalyste à Narbonne. Psychanalyse, psychothérapie, thérapie de couple, suivi enfants et adolescents, groupes de parole professionnels. Cabinet au 19 rue de Londres, 11100 Narbonne.'
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`
+const DEFAULT_OG_IMAGE = 'https://amelieferrizpsy-frontend.vercel.app/og-image.jpg'
 const TWITTER_HANDLE = '@amelieferriz'   // ← à compléter si compte Twitter/X
 
 export default function SEO({

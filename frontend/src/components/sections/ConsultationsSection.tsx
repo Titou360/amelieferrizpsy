@@ -6,9 +6,9 @@ const consultations = [
   {
     icon: Building2,
     title: 'Au cabinet',
-    subtitle: '19 rue de Londres, Narbonne',
+    subtitle: '19 rue de Londres, 11100 Narbonne',
     description:
-      'Recevez-vous en séance individuelle, en couple ou en famille dans un cadre confidentiel et apaisant, au cœur de Narbonne.',
+      'Je vous reçois en séance individuelle, en couple ou en famille dans un cadre confidentiel et apaisant, à Narbonne.',
     note: null,
     color: 'navy',
   },
@@ -17,8 +17,7 @@ const consultations = [
     title: 'À domicile',
     subtitle: 'Sous conditions',
     description:
-      'Pour les personnes en situation de mobilité réduite ou dans l\'incapacité de se déplacer, une consultation à domicile peut être envisagée.',
-    note: '* Sous réserve de faisabilité et de disponibilité. Me contacter pour plus d\'informations.',
+      'Pour les personnes en situation de mobilité réduite ou dans l\'incapacité de se déplacer, une consultation à domicile ou en institution peut être envisagée.',
     color: 'sage',
   },
   {
@@ -95,7 +94,7 @@ export default function ConsultationsSection() {
             transition={{ delay: 0.15 }}
             className="font-serif text-4xl sm:text-5xl text-navy mt-3 font-light"
           >
-            Consultations possibles
+            Consultations
           </motion.h2>
         </div>
 

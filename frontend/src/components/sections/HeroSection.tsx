@@ -42,7 +42,7 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/60 to-navy/80 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-navy/60 via-navy/20 to-navy/0 z-10" />
 
       {/* Content */}
       <div className="relative z-20 text-center px-4 sm:px-6 max-w-4xl mx-auto">
@@ -62,14 +62,14 @@ export default function HeroSection() {
           Un espace{' '}
           <em className="italic text-orange/90">d'écoute</em>
           <br />
-          pour avancer
+          active et d'accompagnement
         </h1>
 
         <p
           ref={subtitleRef}
           className="font-sans text-base sm:text-lg text-cream/70 leading-relaxed max-w-xl mx-auto mb-12"
         >
-          Amélie Ferriz vous accompagne dans votre cheminement intérieur avec bienveillance et professionnalisme,
+          Je vous accompagne dans votre cheminement intérieur avec bienveillance et professionnalisme,
           au cabinet à Narbonne, à domicile ou en téléconsultation.
         </p>
 

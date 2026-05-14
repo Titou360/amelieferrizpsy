@@ -1,17 +1,21 @@
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { LayoutDashboard, Star, FileText, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Star, FileText, HelpCircle, Settings, LogOut, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import DashboardHome from './DashboardHome'
 import ReviewsManager from './ReviewsManager'
 import ArticlesManager from './ArticlesManager'
 import ArticleEditor from './ArticleEditor'
+import FaqManager from './FaqManager'
+import SettingsManager from './SettingsManager'
 
 const navItems = [
   { label: 'Tableau de bord', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Avis patients', href: '/dashboard/avis', icon: Star },
   { label: 'Articles', href: '/dashboard/articles', icon: FileText },
+  { label: 'FAQ', href: '/dashboard/faq', icon: HelpCircle },
+  { label: 'Paramètres', href: '/dashboard/parametres', icon: Settings },
 ]
 
 // Icon legend for dashboard actions
@@ -133,6 +137,8 @@ export default function DashboardPage() {
             <Route path="articles" element={<ArticlesManager />} />
             <Route path="articles/nouveau" element={<ArticleEditor />} />
             <Route path="articles/:id" element={<ArticleEditor />} />
+            <Route path="faq" element={<FaqManager />} />
+            <Route path="parametres" element={<SettingsManager />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </main>

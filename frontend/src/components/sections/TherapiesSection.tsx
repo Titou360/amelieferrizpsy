@@ -139,7 +139,7 @@ export default function TherapiesSection() {
           >
             Accompagnement
           </motion.span>
-          <motion.h2
+          {/* <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -147,7 +147,7 @@ export default function TherapiesSection() {
             className="font-serif text-4xl sm:text-5xl text-navy mt-3 font-light"
           >
             Je vous accompagne
-          </motion.h2>
+          </motion.h2> */}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

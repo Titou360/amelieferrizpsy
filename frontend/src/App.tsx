@@ -11,6 +11,7 @@ import DashboardPage from './pages/dashboard/DashboardPage'
 import TherapyPage from './pages/TherapyPage'
 import ArticlePage from './pages/ArticlePage'
 import LegalPage from './pages/LegalPage'
+import FaqPage from './pages/FaqPage'
 
 export default function App() {
   useEffect(() => {
@@ -81,6 +82,7 @@ export default function App() {
             <Route path="/politique-cookies" element={<LegalPage type="cookies" />} />
             <Route path="/politique-confidentialite" element={<LegalPage type="confidentialite" />} />
             <Route path="/conditions-utilisation" element={<LegalPage type="conditions" />} />
+            <Route path="/faq" element={<FaqPage />} />
             <Route path="/connexion" element={<LoginPage />} />
             <Route
               path="/dashboard/*"

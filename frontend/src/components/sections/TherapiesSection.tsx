@@ -1,7 +1,8 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import { therapies } from '../../lib/therapies'
+import WhyTherapyModal from '../ui/WhyTherapyModal'
 
 const colorMap = {
   navy: {
@@ -85,7 +86,7 @@ function TherapyCard({
 }
 
 // Card "Pourquoi choisir une thérapie ?"
-function WhyCard({ index }: { index: number }) {
+function WhyCard({ index, onClick }: { index: number; onClick: () => void }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -95,7 +96,8 @@ function WhyCard({ index }: { index: number }) {
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="bg-navy flex flex-col items-center justify-center p-10 text-center relative overflow-hidden"
+      onClick={onClick}
+      className="bg-navy flex flex-col items-center justify-center p-10 text-center relative overflow-hidden cursor-pointer group"
       style={{ height: 480 }}
     >
       {/* Motif décoratif */}
@@ -125,6 +127,8 @@ function WhyCard({ index }: { index: number }) {
 }
 
 export default function TherapiesSection() {
+  const [whyOpen, setWhyOpen] = useState(false)
+
   return (
     <section id="accompagnement" className="relative py-24">
       <div className="absolute inset-0 bg-cream/90 z-0" />
@@ -139,24 +143,17 @@ export default function TherapiesSection() {
           >
             Accompagnement
           </motion.span>
-          {/* <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="font-serif text-4xl sm:text-5xl text-navy mt-3 font-light"
-          >
-            Je vous accompagne
-          </motion.h2> */}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <WhyCard index={0} />
+          <WhyCard index={0} onClick={() => setWhyOpen(true)} />
           {therapies.map((t, i) => (
             <TherapyCard key={t.slug} therapy={t} index={i + 1} />
           ))}
         </div>
       </div>
+
+      <WhyTherapyModal open={whyOpen} onClose={() => setWhyOpen(false)} />
     </section>
   )
 }

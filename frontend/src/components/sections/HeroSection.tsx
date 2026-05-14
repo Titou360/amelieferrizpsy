@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowDown } from 'lucide-react'
@@ -99,6 +100,12 @@ export default function HeroSection() {
           >
             Découvrir
           </a>
+          <Link
+            to="/qui-suis-je"
+            className="btn-ghost px-8 py-3 text-sm tracking-widest uppercase"
+          >
+            Qui suis-je&nbsp;?
+          </Link>
         </motion.div>
       </div>
 

@@ -7,7 +7,7 @@ import { therapies } from '../../lib/therapies'
 
 const navLinks = [
   { label: 'Accueil', href: '/' },
-  { label: 'À propos', href: '/#hero' },
+  { label: 'À propos', href: '/a-propos' },
   { label: 'Thérapies pratiquées', href: '/#accompagnement', hasDropdown: true },
   { label: 'Consultations', href: '/#consultations' },
   { label: 'FAQ', href: '/faq' },

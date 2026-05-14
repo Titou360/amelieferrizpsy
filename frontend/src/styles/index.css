@@ -60,11 +60,17 @@
 
   /* TipTap editor prose styles */
   .tiptap-content h1 { @apply text-3xl font-serif font-semibold mb-4 text-navy; }
-  .tiptap-content h2 { @apply text-2xl font-serif font-semibold mb-3 text-navy; }
-  .tiptap-content h3 { @apply text-xl font-serif font-medium mb-2 text-navy; }
+  .tiptap-content h2 { @apply text-3xl font-serif font-semibold mb-3 text-navy; }
+  .tiptap-content h3 { @apply text-3xl font-serif font-medium mb-4 text-navy; }
+  .tiptap-content ul h3 { @apply text-2xl font-serif font-medium mb-2 text-navy; }
   .tiptap-content p  { @apply mb-4 leading-relaxed text-navy/80; }
-  .tiptap-content ul { @apply list-disc pl-6 mb-4 space-y-1; }
-  .tiptap-content ol { @apply list-decimal pl-6 mb-4 space-y-1; }
+  .tiptap-content ul { @apply list-none pl-2 mb-4 space-y-2; }
+  .tiptap-content ol { @apply list-none pl-0 mb-4 space-y-2; }
+  .tiptap-content li { @apply leading-relaxed text-navy/80 pl-5 relative; }
+  .tiptap-content ul > li::before { content: '☉'; @apply absolute left-0 text-orange; }
+  .tiptap-content ol { counter-reset: item; }
+  .tiptap-content ol > li { counter-increment: item; }
+  .tiptap-content ol > li::before { content: counter(item) '.'; @apply absolute left-0 text-orange; }
   .tiptap-content a  { @apply text-orange underline; }
   .tiptap-content strong { @apply font-semibold; }
   .tiptap-content em { @apply italic; }

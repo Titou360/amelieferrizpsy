@@ -167,10 +167,11 @@ export default function ContactBanner() {
                       {/* A réactiver quand les réseaux seront ouverts */}
                       {/* <a href="#" aria-label="Facebook" className="text-cream/60 hover:text-cream transition-colors">
                         <FacebookSvg size={20} />
-                      </a>
-                      <a href="#" aria-label="Instagram" className="text-cream/60 hover:text-cream transition-colors">
-                        <InstagramSvg size={20} />
                       </a> */}
+                      <a href="https://www.instagram.com/amelie_ferriz_psychanalyste/" aria-label="Instagram" className="text-cream/60 hover:text-cream transition-colors">
+                        <InstagramSvg size={20} />
+                      </a>
+                      
                     </div>
                   </div>
                 ) : (

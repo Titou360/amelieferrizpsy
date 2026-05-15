@@ -23,11 +23,12 @@ router.post('/', async (req, res) => {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      tls: { rejectUnauthorized: false },
     })
 
     await transporter.sendMail({
       from: `"Site Amélie Ferriz" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_EMAIL || 'contact@amelieferriz.fr',
+      to: [process.env.CONTACT_EMAIL, process.env.CONTACT_EMAIL_CC].filter(Boolean).join(', '),
       replyTo: email,
       subject: `[Contact] ${subject}`,
       html: `

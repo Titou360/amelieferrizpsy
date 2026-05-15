@@ -20,6 +20,7 @@ import LegalPage from './pages/LegalPage'
 import FaqPage from './pages/FaqPage'
 import AboutPage from './pages/AboutPage'
 import WhoAmIPage from './pages/WhoAmIPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   useEffect(() => {
@@ -95,6 +96,7 @@ export default function App() {
             <Route path="/qui-suis-je" element={<WhoAmIPage />} />
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/connexion" element={<LoginPage />} />
+            <Route path="*" element={<NotFoundPage />} />
             <Route
               path="/dashboard/*"
               element={

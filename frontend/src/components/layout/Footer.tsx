@@ -16,22 +16,22 @@ export default function Footer() {
               Un espace d'écoute bienveillant pour traverser vos questionnements intérieurs et avancer vers mieux-être.
             </p>
             <div className="flex items-center gap-4 mt-6">
-              <a
+              {/* <a
                 href="#"
                 aria-label="Facebook"
                 className="text-cream/40 hover:text-orange transition-colors duration-200"
               >
                 <Facebook size={18} />
-              </a>
+              </a> */}
               <a
-                href="#"
+                href="https://www.linkedin.com/in/amelie-ferriz/"
                 aria-label="LinkedIn"
                 className="text-cream/40 hover:text-orange transition-colors duration-200"
               >
                 <Linkedin size={18} />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/amelie_ferriz_psychanalyste/"
                 aria-label="Instagram"
                 className="text-cream/40 hover:text-orange transition-colors duration-200"
               >

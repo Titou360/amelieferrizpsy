@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import api from '../../lib/api'
@@ -64,12 +65,20 @@ export default function ContactFormSection() {
             <p className="font-sans text-sm text-navy/60">
               Je reviendrai vers vous dans les meilleurs délais.
             </p>
-            <button
-              onClick={() => setStatus('idle')}
-              className="mt-6 btn-outline text-xs tracking-widest uppercase px-8 py-3"
-            >
-              Envoyer un autre message
-            </button>
+            <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+              <button
+                onClick={() => setStatus('idle')}
+                className="btn-outline text-xs tracking-widest uppercase px-8 py-3"
+              >
+                Envoyer un autre message
+              </button>
+              <Link
+                to="/"
+                className="btn-primary text-xs tracking-widest uppercase px-8 py-3"
+              >
+                Retour à l'accueil
+              </Link>
+            </div>
           </motion.div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

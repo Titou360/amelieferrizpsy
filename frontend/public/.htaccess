@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Réécrire uniquement les URLs sans extension (routes React)
+  # Les fichiers .js .css .png etc. ne sont jamais touchés
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]+$
+  RewriteRule ^ /index.html [L]
+</IfModule>

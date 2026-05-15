@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 
 function ScrollToTop() {
@@ -88,6 +88,8 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/therapie/:slug" element={<TherapyPage />} />
             <Route path="/article/:slug" element={<ArticlePage />} />
+            {/* Redirections anciens liens (accents dans l'URL) */}
+            <Route path="/mentions-légales" element={<Navigate to="/mentions-legales" replace />} />
             <Route path="/mentions-legales" element={<LegalPage type="mentions" />} />
             <Route path="/politique-cookies" element={<LegalPage type="cookies" />} />
             <Route path="/politique-confidentialite" element={<LegalPage type="confidentialite" />} />

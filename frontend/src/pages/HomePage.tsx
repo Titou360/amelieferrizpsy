@@ -29,6 +29,7 @@ export default function HomePage() {
       />
 
       <SEO
+        canonical="/"
         schemas={[schemaOrg.localBusiness, schemaOrg.person, schemaOrg.website, schemaOrg.breadcrumbHome, schemaOrg.siteLinks]}
       />
       <Header />

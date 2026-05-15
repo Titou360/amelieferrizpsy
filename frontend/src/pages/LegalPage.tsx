@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import Breadcrumbs from '../components/ui/Breadcrumbs'
+import SEO from '../components/seo/SEO'
 
 type LegalType = 'mentions' | 'cookies' | 'confidentialite' | 'conditions'
 
@@ -66,11 +67,19 @@ const labels: Record<LegalType, string> = {
   conditions: "Conditions d'utilisation",
 }
 
+const slugMap: Record<LegalType, string> = {
+  mentions: '/mentions-legales',
+  cookies: '/politique-cookies',
+  confidentialite: '/politique-confidentialite',
+  conditions: '/conditions-utilisation',
+}
+
 export default function LegalPage({ type }: { type: LegalType }) {
   const { title, body } = content[type]
 
   return (
     <div className="min-h-screen bg-cream">
+      <SEO noindex title={labels[type]} canonical={slugMap[type]} />
       <Header />
 
       <div className="bg-navy pt-32 pb-16 px-4">

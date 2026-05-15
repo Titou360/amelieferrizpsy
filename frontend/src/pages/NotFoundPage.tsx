@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
+import SEO from '../components/seo/SEO'
 
 const fragments = [
   { text: "Cette page semble avoir glissé dans l'inconscient.", x: '10%', y: '20%', delay: 0 },
@@ -70,6 +71,7 @@ function FloatingFragment({ text, x, y, delay }: { text: string; x: string; y: s
 export default function NotFoundPage() {
   return (
     <div className="relative min-h-screen bg-cream flex flex-col overflow-hidden">
+      <SEO noindex title="Page introuvable" />
       <CursorTrail />
       <Header />
 

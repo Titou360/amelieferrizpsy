@@ -45,7 +45,7 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-navy/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        scrolled ? 'bg-navy/95 backdrop-blur-md shadow-lg h-24' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,7 +55,7 @@ export default function Header() {
             <img
               src="/logo-amelie-ferriz-psychanalyste.png"
               alt="Amélie Ferriz — Psychanalyste"
-              className="h-16 w-auto object-contain transition-opacity duration-300 hover:opacity-80"
+              className="h-24 mt-2 w-auto object-contain transition-opacity duration-300 hover:opacity-80"
             />
           </Link>
 
@@ -135,7 +135,7 @@ export default function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-navy/98 backdrop-blur-md overflow-hidden"
+            className="lg:hidden bg-navy overflow-hidden"
           >
             <nav className="px-6 py-4 flex flex-col gap-1">
               {navLinks.map((link) => (

@@ -105,8 +105,7 @@ Chacun pourra se retrouver dans la relation, sans une sensation de vie parallèl
 <p>La durée de la séance est en général de 75 minutes, mais peut être adaptée à chaque situation.
 L’objectif sera de retrouver un équilibre, où chacun se reconnaîtra individuellement dans la relation de couple ou de famille (parent/enfant, parent/adolescent, fratrie, etc…), et ainsi apaiser les tensions, permettant ainsi de se projeter et avancer dans la vie sereinement.</p>
 <ul>
-  <li>50 € par séance de 45 minutes</li>
-  <li>100 € pour une séance de 1 heure et 30 minutes</li>
+  <li>70 € par séance de 1 heure 15 minutes</li>
 </ul>
 `,
   },

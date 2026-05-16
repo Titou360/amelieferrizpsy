@@ -1,5 +1,8 @@
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { ChevronRight, Home } from 'lucide-react'
+
+const SITE_URL = 'https://www.amelieferrizpsychanalyste.fr'
 
 interface Crumb {
   label: string
@@ -12,6 +15,32 @@ interface Props {
 }
 
 export default function Breadcrumbs({ crumbs, light = false }: Props) {
+  useEffect(() => {
+    const allItems = [
+      { label: 'Accueil', href: '/' },
+      ...crumbs,
+    ]
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: allItems.map((crumb, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: crumb.label,
+        ...(crumb.href ? { item: `${SITE_URL}${crumb.href}` } : {}),
+      })),
+    }
+    let script = document.querySelector('script[data-breadcrumb]') as HTMLScriptElement | null
+    if (!script) {
+      script = document.createElement('script')
+      script.type = 'application/ld+json'
+      script.setAttribute('data-breadcrumb', 'true')
+      document.head.appendChild(script)
+    }
+    script.textContent = JSON.stringify(schema)
+    return () => { script?.remove() }
+  }, [crumbs])
+
   const color = light ? 'text-cream/60' : 'text-navy/40'
   const activeColor = light ? 'text-cream/90' : 'text-navy'
   const hoverColor = light ? 'hover:text-cream' : 'hover:text-orange'

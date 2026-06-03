@@ -62,7 +62,10 @@ export default function FaqPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/faqs').then((res) => setFaqs(res.data)).finally(() => setLoading(false))
+    api.get('/faqs')
+      .then((res) => setFaqs(Array.isArray(res.data) ? res.data : []))
+      .catch(() => setFaqs([]))
+      .finally(() => setLoading(false))
   }, [])
 
   return (

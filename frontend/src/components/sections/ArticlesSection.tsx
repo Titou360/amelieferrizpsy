@@ -83,7 +83,7 @@ export default function ArticlesSection() {
 
   useEffect(() => {
     api.get('/articles')
-      .then((res) => setArticles(res.data.slice(0, 3)))
+      .then((res) => setArticles(Array.isArray(res.data) ? res.data.slice(0, 3) : []))
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])

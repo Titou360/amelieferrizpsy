@@ -10,6 +10,7 @@ import * as CookieConsent from 'vanilla-cookieconsent'
 import { ToastProvider } from './components/ui/ToastProvider'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import ErrorBoundary from './components/ErrorBoundary'
 
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -84,6 +85,7 @@ export default function App() {
       <ToastProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <ErrorBoundary>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/therapie/:slug" element={<TherapyPage />} />
@@ -108,6 +110,7 @@ export default function App() {
               }
             />
           </Routes>
+          </ErrorBoundary>
         </BrowserRouter>
       </ToastProvider>
     </AuthProvider>

@@ -89,7 +89,7 @@ export default function TestimonialsSection() {
   useEffect(() => {
     api
       .get('/reviews')
-      .then((res) => setReviews(res.data))
+      .then((res) => setReviews(Array.isArray(res.data) ? res.data : []))
       .catch(() => setReviews([]))
       .finally(() => setLoading(false))
   }, [])

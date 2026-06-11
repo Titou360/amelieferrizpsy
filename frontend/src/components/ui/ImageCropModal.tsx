@@ -67,12 +67,15 @@ export default function ImageCropModal({ imageSrc, aspect, onConfirm, onCancel }
             />
           </Dialog.Overlay>
 
+          {/* Conteneur centrant — fixed plein écran, flex centré (évite le
+              conflit entre le translate Tailwind et le scale de framer-motion) */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
           <Dialog.Content asChild>
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
-              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white w-full max-w-2xl flex flex-col"
+              className="relative z-50 bg-white w-full max-w-2xl flex flex-col pointer-events-auto shadow-2xl focus:outline-none"
               style={{ maxHeight: '90vh' }}
             >
               {/* Header */}
@@ -145,6 +148,7 @@ export default function ImageCropModal({ imageSrc, aspect, onConfirm, onCancel }
               </div>
             </motion.div>
           </Dialog.Content>
+          </div>
         </Dialog.Portal>
       </AnimatePresence>
     </Dialog.Root>

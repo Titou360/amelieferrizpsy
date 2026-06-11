@@ -104,8 +104,8 @@ export default function ArticleEditor() {
 
   const validateFile = useCallback((file: File): string | null => {
     const allowed = ['image/jpeg', 'image/png', 'image/webp']
-    if (!allowed.includes(file.type)) return 'Format non supporté. Utilisez JPG, PNG ou WebP.'
-    if (file.size > 500 * 1024) return 'Image trop lourde. Maximum 500 Ko.'
+    if (!allowed.includes(file.type)) return 'Format non supporté. Utilisez JPG, JPEG, PNG ou WebP.'
+    if (file.size > 1024 * 1024) return 'Image trop lourde. Maximum 1024 Ko.'
     return null
   }, [])
 
@@ -341,7 +341,7 @@ export default function ArticleEditor() {
                 >
                   <Upload size={22} />
                   <span className="text-xs font-sans">Choisir une image</span>
-                  <span className="text-xs font-sans text-navy/25">JPG, PNG, WebP — max 500 Ko</span>
+                  <span className="text-xs font-sans text-navy/25">JPG, JPEG, PNG, WebP — max 1024 Ko</span>
                 </button>
               )}
             </div>

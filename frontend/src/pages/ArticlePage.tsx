@@ -6,6 +6,7 @@ import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import Breadcrumbs from '../components/ui/Breadcrumbs'
 import SEO from '../components/seo/SEO'
+import ShareButtons from '../components/ui/ShareButtons'
 import api from '../lib/api'
 
 interface Article {
@@ -128,6 +129,12 @@ export default function ArticlePage() {
                     <p className="font-sans text-xs text-navy/50">Psychanalyste — Narbonne</p>
                   </div>
                 </div>
+
+                {/* Partage réseaux sociaux */}
+                <ShareButtons
+                  url={`https://www.amelieferrizpsychanalyste.fr/article/${article.slug}`}
+                  title={article.title}
+                />
 
                 <Link to="/" className="inline-flex items-center gap-2 mt-8 text-xs font-sans text-navy/50 hover:text-orange transition-colors uppercase tracking-widest">
                   <ArrowLeft size={14} /> Retour à l'accueil

@@ -14,7 +14,7 @@ const consultations = [
   },
   {
     icon: Home,
-    title: 'À domicile',
+    title: 'En institution',
     subtitle: 'Sous conditions',
     description:
       'Pour les personnes en situation de mobilité réduite ou dans l\'incapacité de se déplacer, une consultation à domicile ou en institution peut être envisagée.',

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import api from '../../lib/api'
@@ -72,12 +71,12 @@ export default function ContactFormSection() {
               >
                 Envoyer un autre message
               </button>
-              <Link
-                to="/"
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="btn-primary text-xs tracking-widest uppercase px-8 py-3"
               >
-                Retour à l'accueil
-              </Link>
+                Retour en haut de la page
+              </button>
             </div>
           </motion.div>
         ) : (

@@ -1,21 +1,9 @@
-import 'dotenv/config'
-
-// Capture toutes les erreurs non catchées pour les voir dans les logs Render
-process.on('uncaughtException', (err) => {
-  console.error('💥 uncaughtException:', err)
-  process.exit(1)
-})
-process.on('unhandledRejection', (reason) => {
-  console.error('💥 unhandledRejection:', reason)
-  process.exit(1)
-})
-
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
-import mongoose from 'mongoose'
 
+import connectDB from './db.js'
 import authRouter from './routes/auth.js'
 import reviewsRouter from './routes/reviews.js'
 import articlesRouter from './routes/articles.js'
@@ -23,30 +11,49 @@ import contactRouter from './routes/contact.js'
 import uploadRouter from './routes/upload.js'
 import faqsRouter from './routes/faqs.js'
 import settingsRouter from './routes/settings.js'
+import mediaRouter from './routes/media.js'
 
 const app = express()
-const PORT = process.env.PORT || 3001
+
+// Derrière le proxy Vercel : nécessaire pour express-rate-limit (X-Forwarded-For)
+app.set('trust proxy', 1)
 
 // Security
 app.use(helmet())
+
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
-  .map(o => o.trim())
+  .map((o) => o.trim())
 
 app.use(cors({
   origin: (origin, cb) => {
-    // Allow requests with no origin (mobile apps, curl, etc.)
+    // Requêtes sans origine (apps mobiles, curl, même domaine…) autorisées
     if (!origin) return cb(null, true)
-    if (allowedOrigins.some(o => origin === o || origin.endsWith('.vercel.app'))) {
+    if (allowedOrigins.some((o) => origin === o || origin.endsWith('.vercel.app'))) {
       return cb(null, true)
     }
     cb(new Error('Not allowed by CORS'))
   },
   credentials: true,
 }))
+
 app.use(express.json({ limit: '5mb' }))
 
-// Rate limiting on contact/auth
+// Health check (liveness) — ne dépend pas de la base
+app.get('/api/health', (_req, res) => res.json({ status: 'ok', ok: true }))
+
+// Connexion MongoDB avant toute route qui en a besoin
+app.use(async (_req, res, next) => {
+  try {
+    await connectDB()
+    next()
+  } catch (err) {
+    console.error('❌ Erreur MongoDB :', err.message)
+    res.status(503).json({ error: 'Service indisponible (base de données)' })
+  }
+})
+
+// Rate limiting sur contact/auth
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 30, standardHeaders: true, legacyHeaders: false })
 app.use('/api/auth', limiter)
 app.use('/api/contact', limiter)
@@ -59,18 +66,6 @@ app.use('/api/contact', contactRouter)
 app.use('/api/upload', uploadRouter)
 app.use('/api/faqs', faqsRouter)
 app.use('/api/settings', settingsRouter)
+app.use('/api/media', mediaRouter)
 
-// Health check
-app.get('/api/health', (_, res) => res.json({ ok: true }))
-
-// Connect MongoDB then start
-mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/amelie-ferriz')
-  .then(() => {
-    console.log('✅ MongoDB connecté')
-    app.listen(PORT, () => console.log(`🚀 API démarrée sur http://localhost:${PORT}`))
-  })
-  .catch((err) => {
-    console.error('❌ Erreur MongoDB :', err.message)
-    process.exit(1)
-  })
+export default app

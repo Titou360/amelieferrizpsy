@@ -1,6 +1,7 @@
 {
   "name": "amelie-ferriz",
   "private": true,
+  "type": "module",
   "workspaces": ["frontend", "backend"],
   "scripts": {
     "dev:frontend": "npm run dev --workspace=frontend",

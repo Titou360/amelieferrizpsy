@@ -73,6 +73,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/pages-locales" className="hover:text-cream transition-colors duration-200">
+                  Pages locales
+                </Link>
+              </li>
+              <li>
                 <Link to="/mentions-legales" className="hover:text-cream transition-colors duration-200">
                   Mentions légales
                 </Link>

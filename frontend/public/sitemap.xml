@@ -56,6 +56,30 @@
   </url>
 
   <url>
+    <loc>https://www.amelieferrizpsychanalyste.fr/pages-locales</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.amelieferrizpsychanalyste.fr/pages-locales/coursan</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.amelieferrizpsychanalyste.fr/pages-locales/gruissan</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.amelieferrizpsychanalyste.fr/pages-locales/lezignan-corbieres</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://www.amelieferrizpsychanalyste.fr/mentions-legales</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

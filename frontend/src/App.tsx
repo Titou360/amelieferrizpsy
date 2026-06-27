@@ -21,6 +21,8 @@ import LegalPage from './pages/LegalPage'
 import FaqPage from './pages/FaqPage'
 import AboutPage from './pages/AboutPage'
 import WhoAmIPage from './pages/WhoAmIPage'
+import LocalAreasPage from './pages/LocalAreasPage'
+import LocalPage from './pages/LocalPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
@@ -99,6 +101,8 @@ export default function App() {
             <Route path="/a-propos" element={<AboutPage />} />
             <Route path="/qui-suis-je" element={<WhoAmIPage />} />
             <Route path="/faq" element={<FaqPage />} />
+            <Route path="/pages-locales" element={<LocalAreasPage />} />
+            <Route path="/pages-locales/:slug" element={<LocalPage />} />
             <Route path="/connexion" element={<LoginPage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route
